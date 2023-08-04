@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>even_or_odd.py</title>
+    <style>
+        #python-code {
+            font-family: 'Courier New', Courier, monospace;
+            white-space: pre;
+            color: #757575;
+        }
+
+        .keyword {
+            color: #5f5fff;
+        }
+
+        .str {
+            color: #008900;
+        }
+
+        .num {
+            color: #ec0000;
+        }
+
+        .func {
+            color: #757575;
+        }
+
+        #input-box {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            background-color: #757575;
+            user-select: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="python-code"></div>
+    <div id="loading"></div>
+    <div id="input-box">
+        <input type="number" id="number-input" placeholder="Enter a number">
+        <button id="check-button">Check</button>
+    </div>
+    <script>
+        let n = 0;
+        const codeDiv = document.getElementById('python-code');
+        codeDiv.innerHTML = `<span class="func">def</span> <span class="keyword">even_or_odd</span>(<span class="keyword">num</span>):`;
+
+        function checkEven(num) {
+            return num & 1;
+        }
+
+        const loadMore = () => {
+            for (let i = 0; i < 101; i++) {
+                const isEven = checkEven(n);
+                codeDiv.innerHTML += `\n\t<span class="keyword">if</span> num == <span class="num">${n}</span>:\n\t\t<span class="keyword">return</span> '<span class="str">${n} is ${isEven ? 'odd' : 'even'}</span>'`;
+                n++;
+            }
+        }
+
+        const observer = new IntersectionObserver((entries) => {
+            if (entries[0].isIntersecting)
+                loadMore();
+        }, {
+            threshold: 1.0
+        });
+
+        observer.observe(document.getElementById('loading'));
+
+        document.getElementById('check-button').addEventListener('click', () => {
+            const num = document.getElementById('number-input').value;
+            const isEven = checkEven(num) ? 'odd' : 'even';
+            alert(`${num} is ${isEven}`);
+        });
+    </script>
+</body>
+
+</html>
